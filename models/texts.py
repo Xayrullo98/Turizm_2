@@ -18,14 +18,20 @@ class Texts(Base):
     language = Column(String(30), nullable=True)
     user_id = Column(Integer, nullable=False)
 
-    about_context = relationship('About', foreign_keys=[source_id],
-                        backref=backref('about_text', order_by="desc(Texts.id)"),
-                        primaryjoin=lambda: and_(About.id == Texts.source_id, Texts.source == ABOUT))
+    about_context = relationship("About", back_populates="about_text", foreign_keys=[source_id],
+                                 overlaps="about_text",order_by="desc(Texts.id)",
+                         primaryjoin=lambda: and_(About.id == Texts.source_id, Texts.source == ABOUT))
+    # hotels_context = relationship("Hotels", back_populates="hotels_text", foreign_keys=[source_id],
+    #                               overlaps="hotels_text")
 
-    hotels_context = relationship('Hotels', foreign_keys=[source_id],
-                         backref=backref('hotels_text', order_by="desc(Texts.id)"),
-                         primaryjoin=lambda: and_(Hotels.id == Texts.source_id, Texts.source == HOTELS))
-
-    news_context = relationship('News', foreign_keys=[source_id],
-                          backref=backref('news_text', order_by="desc(Texts.id)"),
-                          primaryjoin=lambda: and_(News.id == Texts.source_id, Texts.source == NEWS))
+    # about_context = relationship('About', foreign_keys=[source_id],
+    #                     backref=backref('about_text', order_by="desc(Texts.id)"),
+    #                     primaryjoin=lambda: and_(About.id == Texts.source_id, Texts.source == ABOUT))
+    #
+    # hotels_context = relationship('Hotels', foreign_keys=[source_id],
+    #                      backref=backref('hotels_text', order_by="desc(Texts.id)"),
+    #                      primaryjoin=lambda: and_(Hotels.id == Texts.source_id, Texts.source == HOTELS))
+    #
+    # news_context = relationship('News', foreign_keys=[source_id],
+    #                       backref=backref('news_text', order_by="desc(Texts.id)"),
+    #                       primaryjoin=lambda: and_(News.id == Texts.source_id, Texts.source == NEWS))

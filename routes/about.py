@@ -50,12 +50,25 @@ async def about_add(
             add_picture(source_id=new_about.id, source=ABOUT, picture_url=url, name=file.filename,
                         user=current_user, db=db)
     # full data json
-    full_data = dict(json.loads(data))
+    try:
+        full_data = dict(json.loads(data))
+    except Exception as x:
+        raise HTTPException(status_code=422, detail=f"data noto'g'ri yuborildi : {x}")
+
     texts = (full_data.get('texts'))
     videos = (full_data.get('videos'))
+    if texts:
+        for text in texts:
+            add_text(text=text.get('text'), source_id=new_about.id, source=ABOUT, language=text.get("language"),
+                     user=current_user,
+                     db=db)
     # picture comments texts
-    comment_texts = dict(json.loads(data))
+    try:
+        comment_texts = dict(json.loads(picture_comments))
+    except Exception as x:
+        raise HTTPException(status_code=422, detail=f"data noto'g'ri yuborildi : {x}")
     comments = (comment_texts.get('texts'))
+
     if comments:
         for text in comments:
             add_text(text=text.get('text'), source_id=new_about.id, source=PICTURE_COMMENT, language=text.get("language"),

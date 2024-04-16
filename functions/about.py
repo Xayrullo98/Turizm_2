@@ -7,7 +7,7 @@ from utils.pagination import pagination
 
 
 def all_about(search, status,language, page, limit, db):
-    about = db.query(About).options(joinedload(About.about_text)).where(Texts.language==language)
+    about = db.query(About).join(About.about_text)
     if search:
         search_formatted = "%{}%".format(search)
         about = about.filter(
